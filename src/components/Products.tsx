@@ -11,7 +11,7 @@ interface ProductCardProps {
 }
 
 export function ProductArtwork({ source, className = '', alt = '' }: { source: string; className?: string; alt?: string }) {
-  if (/^(https?:\/\/|data:image\/)/i.test(source)) {
+  if (/^(https?:\/\/|data:image\/|\/|\.\/)/i.test(source)) {
     return <img src={source} alt={alt} className={`object-contain ${className}`} />;
   }
   return <span className={className}>{source}</span>;
@@ -26,32 +26,32 @@ export function ProductCard({ product, compact }: ProductCardProps) {
   const lowStock = product.stockQuantity > 0 && product.stockQuantity <= product.lowStockThreshold;
 
   return (
-    <div className={`group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 ${compact ? '' : 'flex flex-col'}`}>
+    <div className={`group bg-white rounded-md border border-gray-200 overflow-hidden hover:shadow-sm transition-shadow duration-200 ${compact ? '' : 'flex flex-col'}`}>
       {/* Image */}
-      <Link to={`/product/${product.slug}`} className="relative block aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+      <Link to={`/product/${product.slug}`} className="relative block aspect-square bg-[#f6f8fa] flex items-center justify-center overflow-hidden">
         <ProductArtwork source={product.images[0]} alt={product.name} className="h-full w-full p-3 sm:p-5 text-7xl sm:text-8xl group-hover:scale-110 transition-transform duration-300" />
         
         {/* Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1">
           {discount > 0 && (
-            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{discount}% OFF</span>
+            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">{discount}% OFF</span>
           )}
           {product.newArrival && (
-            <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">NEW</span>
+            <span className="bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">NEW</span>
           )}
           {product.bestSeller && (
-            <span className="bg-[#f5a623] text-[#1e3a5f] text-[10px] font-bold px-2 py-0.5 rounded-full">BEST SELLER</span>
+            <span className="bg-[#123d63] text-white text-[10px] font-bold px-2 py-0.5 rounded-md">BEST SELLER</span>
           )}
         </div>
 
         {/* Stock Status */}
         {outOfStock && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <span className="bg-white text-gray-800 text-xs font-bold px-3 py-1 rounded-full">OUT OF STOCK</span>
+            <span className="bg-white text-gray-800 text-xs font-bold px-3 py-1 rounded-md">OUT OF STOCK</span>
           </div>
         )}
         {lowStock && (
-          <span className="absolute bottom-2 left-2 bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+          <span className="absolute bottom-2 left-2 bg-orange-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
             Only {product.stockQuantity} left
           </span>
         )}
@@ -90,7 +90,7 @@ export function ProductCard({ product, compact }: ProductCardProps) {
 
         {/* Price */}
         <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-lg font-bold text-[#1e3a5f]">{formatPrice(effectivePrice)}</span>
+          <span className="text-lg font-bold text-[#123d63]">{formatPrice(effectivePrice)}</span>
           {product.salePrice && (
             <span className="text-xs text-gray-400 line-through">{formatPrice(product.price)}</span>
           )}
@@ -100,7 +100,7 @@ export function ProductCard({ product, compact }: ProductCardProps) {
         {!outOfStock && (
           <button
             onClick={() => addToCart(product.id)}
-            className="w-full bg-[#f5a623] hover:bg-[#e09500] text-[#1e3a5f] font-semibold text-sm py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-[#123d63] hover:bg-[#0b2d4a] text-white font-semibold text-sm py-2.5 rounded-md transition-colors flex items-center justify-center gap-2"
           >
             <ShoppingCart className="w-4 h-4" />
             Add to Cart
@@ -157,7 +157,7 @@ export function PackageCard({ pkg, schoolName, className }: { pkg: any; schoolNa
   const savings = pkg.savings ?? pkg.retailPrice - pkg.packagePrice;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all">
+    <div className="bg-white rounded-md border border-gray-200 p-5 hover:shadow-sm transition-shadow">
       <div className="flex items-start justify-between mb-4">
         <div>
           <h3 className="font-bold text-[#1e3a5f] text-lg">{packageTitle}</h3>

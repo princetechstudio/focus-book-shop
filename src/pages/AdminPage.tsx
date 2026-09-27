@@ -8,7 +8,7 @@ import type { Order, Product, StorePackage, StorePackageItem } from '../types';
 import { ProductArtwork } from '../components/Products';
 import { useTheme } from '../context/ThemeContext';
 import type { Session } from '@supabase/supabase-js';
-import logoImage from '../../images/image.png';
+import logoImage from '../../images/logo.jpeg';
 
 export function AdminPage() {
   const [activeSection, setActiveSection] = useState('dashboard');

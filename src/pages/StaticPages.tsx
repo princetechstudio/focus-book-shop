@@ -56,106 +56,156 @@ export function AboutPage() {
 export function ContactPage() {
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [whatsappUrl, setWhatsappUrl] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const message = [
+      'Hello FOCUS, I have an inquiry.',
+      `Name: ${formData.name.trim()}`,
+      `Phone: ${formData.phone.trim()}`,
+      formData.email.trim() ? `Email: ${formData.email.trim()}` : '',
+      `Message: ${formData.message.trim()}`,
+    ].filter(Boolean).join('\n');
+    const url = `https://wa.me/233244602008?text=${encodeURIComponent(message)}`;
+    setWhatsappUrl(url);
     setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
-      <h1 className="text-3xl md:text-4xl font-bold text-[#1e3a5f] mb-8">Contact Us</h1>
+    <div className="mx-auto max-w-6xl px-4 py-10 md:py-14">
+      <div className="mb-8 max-w-2xl">
+        <p className="mb-2 text-sm font-semibold uppercase text-[#123d63]">FOCUS customer care</p>
+        <h1 className="text-3xl font-bold text-[#123d63] md:text-4xl">Contact us</h1>
+        <p className="mt-3 text-base leading-7 text-slate-600">Questions about a product, an order, or a school package? Talk to our team.</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Contact Form */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8">
-          <h3 className="text-xl font-bold text-[#1e3a5f] mb-4">Send us a Message</h3>
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+        <aside>
+          <h2 className="mb-5 text-xl font-bold text-[#123d63]">Get in touch</h2>
+          <div className="divide-y divide-slate-200 border-y border-slate-200">
+            <a href="tel:+233244602008" className="flex items-center gap-4 py-4 hover:text-[#123d63]">
+              <Phone className="h-5 w-5 shrink-0 text-[#123d63]" />
+              <span><span className="block text-xs text-slate-500">Call us</span><span className="font-semibold">+233 244 602 008</span></span>
+            </a>
+            <a href="https://wa.me/233244602008" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 py-4 hover:text-[#123d63]">
+              <MessageCircle className="h-5 w-5 shrink-0 text-green-600" />
+              <span><span className="block text-xs text-slate-500">WhatsApp</span><span className="font-semibold">Chat with our team</span></span>
+            </a>
+            <a href="mailto:info@focusstore.com" className="flex items-center gap-4 py-4 hover:text-[#123d63]">
+              <Mail className="h-5 w-5 shrink-0 text-[#123d63]" />
+              <span><span className="block text-xs text-slate-500">Email</span><span className="font-semibold">info@focusstore.com</span></span>
+            </a>
+            <div className="flex items-center gap-4 py-4">
+              <MapPin className="h-5 w-5 shrink-0 text-[#123d63]" />
+              <span><span className="block text-xs text-slate-500">Visit</span><span className="font-semibold">Kasoa, Ghana</span></span>
+            </div>
+          </div>
+
+          <div className="mt-7">
+            <h2 className="mb-3 text-lg font-bold text-[#123d63]">Business hours</h2>
+            <dl className="space-y-2 text-sm">
+              <div className="flex justify-between gap-4"><dt className="text-slate-500">Monday–Friday</dt><dd className="font-medium text-slate-800">8:00 AM–6:00 PM</dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-slate-500">Saturday</dt><dd className="font-medium text-slate-800">9:00 AM–4:00 PM</dd></div>
+              <div className="flex justify-between gap-4"><dt className="text-slate-500">Sunday</dt><dd className="font-medium text-slate-800">Closed</dd></div>
+            </dl>
+          </div>
+        </aside>
+
+        <section className="border-t border-slate-200 pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
+          <h2 className="mb-2 text-xl font-bold text-[#123d63]">Send us a message</h2>
+          <p className="mb-5 text-sm text-slate-600">We’ll prepare your message in WhatsApp so you can review it and send it to our team.</p>
           
           {submitted ? (
-            <div className="text-center py-8">
-              <span className="text-4xl block mb-3">✅</span>
-              <p className="font-semibold text-green-600">Message sent successfully!</p>
-              <p className="text-sm text-gray-500 mt-1">We'll get back to you soon.</p>
+            <div role="status" className="border-y border-green-200 bg-green-50 px-4 py-5">
+              <p className="font-semibold text-green-900">Your message is ready in WhatsApp.</p>
+              <p className="mt-1 text-sm text-green-800">Review it there and tap Send to contact FOCUS.</p>
+              <div className="mt-4 flex flex-wrap gap-4 text-sm font-semibold">
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-green-900 underline underline-offset-4">Open WhatsApp</a>
+                <button type="button" onClick={() => setSubmitted(false)} className="text-slate-700 underline underline-offset-4">Write another message</button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Full Name *</label>
-                <input type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#f5a623]" />
+                <label htmlFor="contact-name" className="mb-1 block text-sm font-medium text-slate-700">Full name *</label>
+                <input id="contact-name" name="name" autoComplete="name" type="text" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full rounded-md border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#123d63]" />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Phone Number *</label>
-                <input type="tel" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#f5a623]" />
+                <label htmlFor="contact-phone" className="mb-1 block text-sm font-medium text-slate-700">Phone number *</label>
+                <input id="contact-phone" name="phone" autoComplete="tel" type="tel" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full rounded-md border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#123d63]" />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Email</label>
-                <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#f5a623]" />
+                <label htmlFor="contact-email" className="mb-1 block text-sm font-medium text-slate-700">Email (optional)</label>
+                <input id="contact-email" name="email" autoComplete="email" type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full rounded-md border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#123d63]" />
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">Message *</label>
-                <textarea required rows={4} value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#f5a623]" />
+                <label htmlFor="contact-message" className="mb-1 block text-sm font-medium text-slate-700">Message *</label>
+                <textarea id="contact-message" name="message" required rows={5} value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} className="w-full rounded-md border border-slate-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#123d63]" />
               </div>
-              <button type="submit" className="w-full bg-[#f5a623] hover:bg-[#e09500] text-[#1e3a5f] font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
-                <Send className="w-4 h-4" /> Send Message
+              <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#123d63] px-5 py-3 font-semibold text-white transition-colors hover:bg-[#0b2d4a]">
+                <Send className="h-4 w-4" /> Continue to WhatsApp
               </button>
             </form>
           )}
-        </div>
+        </section>
+      </div>
+    </div>
+  );
+}
 
-        {/* Contact Info */}
-        <div className="space-y-6">
-          <div className="bg-white rounded-2xl border border-gray-100 p-6">
-            <h3 className="text-lg font-bold text-[#1e3a5f] mb-4">Get in Touch</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-                  <Phone className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Phone</p>
-                  <p className="font-medium text-gray-800">+233 XX XXX XXXX</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">WhatsApp</p>
-                  <p className="font-medium text-gray-800">Available for orders & inquiries</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
-                  <Mail className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium text-gray-800">info@focusstore.com</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-orange-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Address</p>
-                  <p className="font-medium text-gray-800">Accra, Ghana</p>
-                </div>
-              </div>
-            </div>
-          </div>
+export function PrivacyPage() {
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-10 md:py-14">
+      <p className="mb-2 text-sm font-semibold uppercase text-[#123d63]">FOCUS policies</p>
+      <h1 className="text-3xl font-bold text-[#123d63] md:text-4xl">Privacy policy</h1>
+      <p className="mt-4 text-sm leading-6 text-slate-500">This page explains how information is used when you browse or shop with FOCUS.</p>
+      <div className="mt-8 space-y-7 text-slate-700">
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">Information you provide</h2>
+          <p className="mt-2 leading-7">When you contact us, create an account, or place an order, you may provide your name, phone number, email address, and delivery details.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">How we use it</h2>
+          <p className="mt-2 leading-7">FOCUS uses this information to respond to inquiries, process orders, arrange delivery or pickup, and support your account. Shopping preferences such as your cart and wishlist may be stored in your browser.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">Payments and external services</h2>
+          <p className="mt-2 leading-7">If you choose Paystack at checkout, payment details are handled through Paystack’s payment flow and are subject to its privacy terms. Links to WhatsApp and email open those external services.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">Questions about your information</h2>
+          <p className="mt-2 leading-7">For privacy questions, contact <a href="mailto:info@focusstore.com" className="font-medium text-[#123d63] underline underline-offset-4">info@focusstore.com</a>.</p>
+        </section>
+      </div>
+    </div>
+  );
+}
 
-          <div className="bg-white rounded-2xl border border-gray-100 p-6">
-            <h3 className="text-lg font-bold text-[#1e3a5f] mb-3">Business Hours</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-gray-500">Monday - Friday</span><span className="font-medium">8:00 AM - 6:00 PM</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Saturday</span><span className="font-medium">9:00 AM - 4:00 PM</span></div>
-              <div className="flex justify-between"><span className="text-gray-500">Sunday</span><span className="font-medium">Closed</span></div>
-            </div>
-          </div>
-        </div>
+export function TermsPage() {
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-10 md:py-14">
+      <p className="mb-2 text-sm font-semibold uppercase text-[#123d63]">FOCUS policies</p>
+      <h1 className="text-3xl font-bold text-[#123d63] md:text-4xl">Terms &amp; conditions</h1>
+      <p className="mt-4 text-sm leading-6 text-slate-500">These terms cover browsing, ordering, and shopping with FOCUS.</p>
+      <div className="mt-8 space-y-7 text-slate-700">
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">Products and prices</h2>
+          <p className="mt-2 leading-7">Product availability and prices can change. Review your cart and the total shown at checkout before placing an order.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">Orders and payment</h2>
+          <p className="mt-2 leading-7">Provide accurate contact and delivery information. Use the payment methods offered at checkout; Paystack payments are subject to confirmation by the payment provider.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">Delivery, pickup, and returns</h2>
+          <p className="mt-2 leading-7">Available delivery and pickup options and fees are shown during checkout. For an order issue or return request, contact FOCUS with your order number so the team can assist.</p>
+        </section>
+        <section>
+          <h2 className="text-lg font-semibold text-slate-900">Contact</h2>
+          <p className="mt-2 leading-7">Questions about these terms? Email <a href="mailto:info@focusstore.com" className="font-medium text-[#123d63] underline underline-offset-4">info@focusstore.com</a> or call <a href="tel:+233244602008" className="font-medium text-[#123d63] underline underline-offset-4">+233 244 602 008</a>.</p>
+        </section>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [darkMode, setDarkMode] = useState(() => {
     try {
-      return localStorage.getItem('focus-theme') !== 'light';
+      return localStorage.getItem('focus-theme-v2') === 'dark';
     } catch {
       return true;
     }
@@ -20,7 +20,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.classList.toggle('theme-dark', darkMode);
     document.documentElement.style.colorScheme = darkMode ? 'dark' : 'light';
     try {
-      localStorage.setItem('focus-theme', darkMode ? 'dark' : 'light');
+      localStorage.setItem('focus-theme-v2', darkMode ? 'dark' : 'light');
     } catch {
       // Theme remains available for the current session if storage is disabled.
     }

@@ -5,13 +5,13 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1e3a5f",
+  "theme_color": "#123d63",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "/logo.jpeg",
+      "sizes": "1280x853",
+      "type": "image/jpeg"
     }
   ],
   "categories": ["education", "shopping"],

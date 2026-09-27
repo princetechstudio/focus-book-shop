@@ -8,7 +8,7 @@ import { ProductPage } from './pages/ProductPage';
 import { CartPage, CheckoutPage, OrderConfirmationPage } from './pages/CartPage';
 import { AccountPage, TrackOrderPage, WishlistPage, PackagesPage } from './pages/AccountPage';
 import { AdminPage } from './pages/AdminPage';
-import { AboutPage, ContactPage, FAQPage, SearchPage } from './pages/StaticPages';
+import { AboutPage, ContactPage, FAQPage, PrivacyPage, SearchPage, TermsPage } from './pages/StaticPages';
 import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
@@ -32,8 +32,8 @@ function App() {
           <Route path="/about" element={<Layout><AboutPage /></Layout>} />
           <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
           <Route path="/faq" element={<Layout><FAQPage /></Layout>} />
-          <Route path="/privacy" element={<Layout><AboutPage /></Layout>} />
-          <Route path="/terms" element={<Layout><AboutPage /></Layout>} />
+          <Route path="/privacy" element={<Layout><PrivacyPage /></Layout>} />
+          <Route path="/terms" element={<Layout><TermsPage /></Layout>} />
           <Route path="/schools/*" element={<Navigate to="/shop" replace />} />
           <Route path="*" element={<Navigate to="/shop" replace />} />
           </Routes>
