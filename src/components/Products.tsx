@@ -1,9 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { Heart, ShoppingCart, Eye, Star, Package } from 'lucide-react';
 import { Product } from '../types';
 import { formatPrice, getDiscountPercentage, products } from '../data/store';
 import { useApp } from '../context/AppContext';
+
+const productGridReveal: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+};
+
+const productReveal: Variants = {
+  hidden: { opacity: 0, y: 36, scale: 0.965 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] },
+  },
+};
 
 interface ProductCardProps {
   product: Product;
@@ -125,8 +141,16 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, title, subtitle, viewAllLink, columns }: ProductGridProps) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <section className="py-8">
+    <motion.section
+      className="py-8"
+      initial={prefersReducedMotion ? false : 'hidden'}
+      whileInView={prefersReducedMotion ? undefined : 'visible'}
+      viewport={{ once: true, amount: 0.15 }}
+      variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { duration: prefersReducedMotion ? 0 : 0.55 } } }}
+    >
       {(title || viewAllLink) && (
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -140,12 +164,14 @@ export function ProductGrid({ products, title, subtitle, viewAllLink, columns }:
           )}
         </div>
       )}
-      <div className="product-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <motion.div className="product-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4" variants={productGridReveal}>
         {products.map(product => (
-          <ProductCard key={product.id} product={product} />
+          <motion.div key={product.id} variants={productReveal} whileHover={prefersReducedMotion ? undefined : { y: -5, scale: 1.015 }}>
+            <ProductCard product={product} />
+          </motion.div>
         ))}
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 }
 

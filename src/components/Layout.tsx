@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { Search, ShoppingCart, Heart, User, Menu, X, Phone, Mail, MapPin, MessageCircle, SunMedium, MoonStar, ChevronDown, ChevronRight } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 import { categories, searchProducts, formatPrice } from '../data/store';
+import { StoreAssistant } from './StoreAssistant';
 import logoImage from '../../images/logo.jpeg';
 
 type DepartmentSubcategory = {
@@ -29,6 +31,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [searchResults, setSearchResults] = useState<ReturnType<typeof searchProducts>>([]);
   const { darkMode, toggleTheme } = useTheme();
   const location = useLocation();
+  const prefersReducedMotion = useReducedMotion();
   const { cartCount, cartTotal, state } = useApp();
 
   const shellClasses = darkMode ? 'bg-[#111820] text-slate-100' : 'bg-white text-slate-900';
@@ -337,9 +340,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Main Content */}
       <main className={`flex-1 ${mainClasses}`}>
-        <div key={`${location.pathname}${location.search}`} className="page-enter">
-          {themedChildren}
-        </div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={`${location.pathname}${location.search}`}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 18, scale: 0.985 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={prefersReducedMotion ? undefined : { opacity: 0, y: -10, scale: 0.992 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {themedChildren}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Footer */}
@@ -415,6 +426,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+
+      <StoreAssistant />
 
       {/* WhatsApp Float */}
       <a

@@ -81,7 +81,7 @@ export function HomePage({ darkMode = false }: { darkMode?: boolean }) {
               const slideProducts = products.filter(product => product.categoryId === slide.categoryId && product.status === 'active').slice(0, 3);
               return (
                 <article key={slide.categoryId} className="grid min-h-[310px] min-w-full snap-start items-center gap-6 overflow-hidden bg-[#123d63] px-6 py-8 text-white sm:px-12 md:min-h-[390px] md:grid-cols-2 md:px-16 md:py-12">
-                  <div className="max-w-xl">
+                  <div className={`max-w-xl hero-slide-copy ${activeSlide === index ? 'is-active' : ''}`}>
                     <p className="mb-3 text-sm font-semibold uppercase">{slide.eyebrow}</p>
                     <h1 className="text-3xl font-bold leading-tight sm:text-4xl md:text-5xl">{slide.title}</h1>
                     <p className="mt-3 max-w-md text-sm leading-6 text-white/90">{slide.description}</p>
@@ -89,7 +89,7 @@ export function HomePage({ darkMode = false }: { darkMode?: boolean }) {
                       {slide.action} <ArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
-                  <div className="flex h-44 items-center justify-center gap-3 sm:h-56 md:h-64">
+                  <div className={`flex h-44 items-center justify-center gap-3 sm:h-56 md:h-64 hero-slide-visual ${activeSlide === index ? 'is-active' : ''}`}>
                     {index === 0 ? (
                       <img src={featuredImage} alt="Featured school supplies" className="h-full w-full rounded-md border border-[#f5a623] bg-[#fff4cc] p-2 object-contain sm:p-4" />
                     ) : slideProducts.map(product => (

@@ -159,7 +159,7 @@ export function AdminPage() {
   if (!session || !isAdmin) {
     const signedInButNotAdmin = Boolean(session && !isAdmin);
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-12 text-gray-900">
+      <main className="page-enter min-h-screen bg-gray-50 px-4 py-12 text-gray-900">
         <section className="mx-auto max-w-md rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
           <div className="mb-6 flex items-center gap-3">
             <div className="grid h-12 w-12 place-items-center rounded-lg border border-slate-700 bg-[#0b1220] p-1.5">
@@ -204,7 +204,7 @@ export function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div className="page-enter min-h-screen bg-gray-50 text-gray-900">
       <div className="flex">
         {/* Sidebar */}
         <aside className="hidden lg:block w-64 bg-[#1e3a5f] min-h-screen p-4 fixed left-0 top-0">
@@ -258,14 +258,16 @@ export function AdminPage() {
             {ordersWarning && (activeSection === 'orders' || activeSection === 'dashboard') && (
               <p role="status" className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">Order database: {ordersWarning}</p>
             )}
-            {activeSection === 'dashboard' && <DashboardSection totalRevenue={totalRevenue} pendingOrders={pendingOrders} lowStockProducts={lowStockProducts} orders={allOrders} storePackageCount={state.storePackages.length} />}
-            {activeSection === 'orders' && <OrdersSection orders={allOrders} dispatch={dispatch} onOrderUpdated={order => setDatabaseOrders(current => current.map(saved => saved.id === order.id ? order : saved))} />}
-            {activeSection === 'products' && <ProductsSection />}
-            {activeSection === 'inventory' && <InventorySection lowStockProducts={lowStockProducts} outOfStockProducts={outOfStockProducts} />}
-            {activeSection === 'packages' && <PackagesSection />}
-            {activeSection === 'customers' && <CustomersSection />}
-            {activeSection === 'reports' && <ReportsSection />}
-            {activeSection === 'settings' && <SettingsSection />}
+            <div key={activeSection} className="page-enter">
+              {activeSection === 'dashboard' && <DashboardSection totalRevenue={totalRevenue} pendingOrders={pendingOrders} lowStockProducts={lowStockProducts} orders={allOrders} storePackageCount={state.storePackages.length} />}
+              {activeSection === 'orders' && <OrdersSection orders={allOrders} dispatch={dispatch} onOrderUpdated={order => setDatabaseOrders(current => current.map(saved => saved.id === order.id ? order : saved))} />}
+              {activeSection === 'products' && <ProductsSection />}
+              {activeSection === 'inventory' && <InventorySection lowStockProducts={lowStockProducts} outOfStockProducts={outOfStockProducts} />}
+              {activeSection === 'packages' && <PackagesSection />}
+              {activeSection === 'customers' && <CustomersSection />}
+              {activeSection === 'reports' && <ReportsSection />}
+              {activeSection === 'settings' && <SettingsSection />}
+            </div>
           </div>
         </div>
       </div>
